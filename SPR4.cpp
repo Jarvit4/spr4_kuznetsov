@@ -1,10 +1,10 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 
 // Базовий клас
 class Vehicle {
 protected:
-    std::string brand;  
+    std::string brand;
 
 public:
     Vehicle(const std::string& brand) : brand(brand) {
@@ -15,7 +15,7 @@ public:
         std::cout << "Vehicle destructor" << std::endl;
     }
 
-    virtual void start() const = 0;  // Абстрактний метод
+    virtual void start() const = 0; // Абстрактний метод
 
     void displayBrand() const {
         std::cout << "Brand: " << brand << std::endl;
@@ -25,7 +25,7 @@ public:
 // Дочірній клас Car
 class Car : public Vehicle {
 private:
-    int numDoors;  
+    int numDoors;
 
 public:
     Car(const std::string& brand, int numDoors) : Vehicle(brand), numDoors(numDoors) {
@@ -38,6 +38,11 @@ public:
 
     void start() const override {
         std::cout << "Car started" << std::endl;
+        startEngine();
+    }
+
+    void startEngine() const {
+        std::cout << "Starting engine" << std::endl;
     }
 
     void openDoors() const {
@@ -58,6 +63,11 @@ public:
 
     void start() const override {
         std::cout << "Bicycle started pedaling" << std::endl;
+        startPeddling();
+    }
+
+    void startPeddling() const {
+        std::cout << "Starting pedaling" << std::endl;
     }
 
     void ringBell() const {
@@ -74,13 +84,14 @@ int main() {
     vehicles[2] = new Car("Ford", 2);
 
     for (int i = 0; i < arraySize; ++i) {
-        vehicles[i]->start();  // Поліморфізм
-        vehicles[i]->displayBrand();  // public метод базового класу
+        vehicles[i]->start(); // Поліморфізм
+        vehicles[i]->displayBrand(); // public метод базового класу
+
         if (Car* car = dynamic_cast<Car*>(vehicles[i])) {
-            car->openDoors();  // Виклик методу дочірнього класу (якщо це автомобіль)
+            car->openDoors(); // Виклик методу дочірнього класу (якщо це автомобіль)
         }
         else if (Bicycle* bicycle = dynamic_cast<Bicycle*>(vehicles[i])) {
-            bicycle->ringBell();  // Виклик методу дочірнього класу (якщо це велосипед)
+            bicycle->ringBell(); // Виклик методу дочірнього класу (якщо це велосипед)
         }
         std::cout << "____" << std::endl;
     }
